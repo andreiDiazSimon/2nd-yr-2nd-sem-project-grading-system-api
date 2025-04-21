@@ -24,6 +24,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<ISignInService, SignInService>();
 builder.Services.AddScoped<IAdminStudentService, AdminStudentService>();
+builder.Services.AddScoped<IAdminTeacherService, AdminTeacherService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

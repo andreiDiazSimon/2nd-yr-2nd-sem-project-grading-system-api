@@ -21,7 +21,7 @@ namespace GradingSystemApi.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<IActionResult> SignIn([FromBody] SignInRequestDto request)
+        public async Task<ActionResult<List<AdminGetAllStudentResponseDto>>> SignIn([FromBody] SignInRequestDto request)
         {
             Console.WriteLine(request.username);
             Console.WriteLine(request.password);
