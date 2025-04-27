@@ -17,16 +17,29 @@ namespace GradingSystemApi.Services
 
         public async Task<SignInResponseDto> SignIn(string username, string password)
         {
-            if (username == "test" && password == "test")
-                return new SignInResponseDto { Success = true, Message = "you are admin" };
+            Console.WriteLine($"username: {username}\npassword: {password}");
 
-            var user = await _context.Students
+            string messageSuccess = "Sign In successful";
+
+            if (username == "test" && password == "test")
+                return new SignInResponseDto { Success = true, Role = "admin", Message = messageSuccess };
+
+            var studentUser = await _context.Students
                 .FirstOrDefaultAsync(s => s.Username == username && s.Password == password);
 
-            if (user == null)
-                return new SignInResponseDto { Success = false, Message = "Invalid credentials" };
+            var teacherUser = await _context.Teachers
+            .FirstOrDefaultAsync(t => t.Username == username && t.Password == password);
 
-            return new SignInResponseDto { Success = true, Message = "Sign In successful" };
+            if (studentUser != null)
+            {
+                return new SignInResponseDto { Success = true, Role = "student", Message = messageSuccess };
+            }
+            if (teacherUser != null)
+            {
+                return new SignInResponseDto { Success = true, Role = "teacher", Message = messageSuccess };
+            }
+
+            return new SignInResponseDto { Success = false, Message = "Invalid credentials" };
         }
     }
 }

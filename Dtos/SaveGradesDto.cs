@@ -1,0 +1,19 @@
+namespace GradingSystemApi.Dtos
+{
+    public class GradeDto
+    {
+        public string Term { get; set; }
+        public double Week1 { get; set; }
+        public double Week2 { get; set; }
+        public double Week3 { get; set; }
+        public double Week4 { get; set; }
+        public double Week5 { get; set; }
+        public double Exam { get; set; }
+    }
+
+    public class SaveGradesDto
+    {
+        public int StudentId { get; set; }
+        public List<GradeDto> Grades { get; set; } = new List<GradeDto>();
+    }
+}

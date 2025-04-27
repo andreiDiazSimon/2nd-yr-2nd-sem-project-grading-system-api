@@ -25,9 +25,6 @@ namespace GradingSystemApi.Controllers
         [HttpPost("add-student")]
         public async Task<IActionResult> AdminAddStudent([FromBody] AdminAddStudentRequestDto request)
         {
-            Console.WriteLine(request.username);
-            Console.WriteLine(request.password);
-            Console.WriteLine(request.section);
             var result = await _adminStudentService.AdminAddStudent(request.username, request.password, request.section);
             return Ok(result);
         }

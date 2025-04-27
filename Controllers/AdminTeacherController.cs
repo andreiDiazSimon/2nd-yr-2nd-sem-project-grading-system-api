@@ -20,5 +20,8 @@ namespace GradingSystemApi.Controllers
             var teachers = await _adminTeacherService.GetAllTeachers();
             return Ok(teachers);
         }
+
+
+
     }
 }

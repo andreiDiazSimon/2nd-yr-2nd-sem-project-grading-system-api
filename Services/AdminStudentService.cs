@@ -17,25 +17,69 @@ namespace GradingSystemApi.Services
         }
 
 
+
+
         public async Task<AdminAddStudentResponseDto> AdminAddStudent(string username, string password, string section)
         {
+            Console.WriteLine($"username: {username}\npassword: {password}\nsection: {section}");
+
+            // Create the new student
             var newStudent = new Student
             {
                 Username = username,
                 Password = password,
-                Section = section,
-                Grades = new List<Grade>()
+                Section = section
             };
 
             _context.Students.Add(newStudent);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); // Save the new student to get the Id
+
+            // Automatically associate teachers with the new student
+            var teachers = await _context.Teachers.ToListAsync();  // Fetch all teachers (you can modify this if you need to filter specific teachers)
+
+            foreach (var teacher in teachers)
+            {
+                var studentTeacher = new StudentTeacher
+                {
+                    StudentId = newStudent.Id,
+                    TeacherId = teacher.Id
+                };
+
+                _context.StudentTeachers.Add(studentTeacher); // Add the association to the join table
+            }
+
+            await _context.SaveChangesAsync(); // Save the student-teacher associations
+
+            // Add default grades for the student
+            var terms = new[] { "Prelim", "Midterm", "Finals" };
+            foreach (var term in terms)
+            {
+                var grade = new Grade
+                {
+                    StudentId = newStudent.Id,
+                    Term = term,
+                    Week1 = 0.0,
+                    Week2 = 0.0,
+                    Week3 = 0.0,
+                    Week4 = 0.0,
+                    Week5 = 0.0,
+                    Exam = 0.0
+                };
+
+                _context.Grades.Add(grade);
+            }
+
+            await _context.SaveChangesAsync(); // Save the grades
 
             return new AdminAddStudentResponseDto
             {
                 Success = true,
-                Message = "Student added successfully."
+                Message = "Student added successfully with teachers."
             };
         }
+
+
+
 
         public async Task<List<AdminGetAllStudentResponseDto>> GetAllStudents()
         {
@@ -48,6 +92,9 @@ namespace GradingSystemApi.Services
                     })
                     .ToListAsync();
         }
+
+
+
 
 
         public async Task<bool> RemoveStudent(int studentId)
