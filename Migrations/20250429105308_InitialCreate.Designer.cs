@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace grading_system_api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250419131019_AddTeacherAndStudentTeacher")]
-    partial class AddTeacherAndStudentTeacher
+    [Migration("20250429105308_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,9 @@ namespace grading_system_api.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Term")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -60,6 +63,8 @@ namespace grading_system_api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Grades");
                 });
@@ -112,6 +117,10 @@ namespace grading_system_api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -133,7 +142,15 @@ namespace grading_system_api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("GradingSystemApi.Models.Teacher", "Teacher")
+                        .WithMany("Grades")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Student");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("GradingSystemApi.Models.StudentTeacher", b =>
@@ -164,6 +181,8 @@ namespace grading_system_api.Migrations
 
             modelBuilder.Entity("GradingSystemApi.Models.Teacher", b =>
                 {
+                    b.Navigation("Grades");
+
                     b.Navigation("StudentTeachers");
                 });
 #pragma warning restore 612, 618

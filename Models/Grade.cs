@@ -7,6 +7,9 @@ namespace GradingSystemApi.Models
         public int StudentId { get; set; }
         public Student Student { get; set; }
 
+        public int TeacherId { get; set; }  // Foreign key to Teacher
+        public Teacher Teacher { get; set; }  // Navigation property to Teacher
+
         public required string Term { get; set; }
 
         public double Week1 { get; set; }
@@ -15,5 +18,7 @@ namespace GradingSystemApi.Models
         public double Week4 { get; set; }
         public double Week5 { get; set; }
         public double Exam { get; set; }
+
+        // Add foreign key constraints for Teacher and Student if needed
     }
 }

@@ -1,6 +1,6 @@
 public class GradeDto
 {
-    public string Term { get; set; } = "";
+    public string Term { get; set; }
     public double Week1 { get; set; }
     public double Week2 { get; set; }
     public double Week3 { get; set; }

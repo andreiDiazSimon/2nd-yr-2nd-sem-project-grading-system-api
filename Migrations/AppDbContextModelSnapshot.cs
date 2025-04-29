@@ -35,6 +35,9 @@ namespace grading_system_api.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Term")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -57,6 +60,8 @@ namespace grading_system_api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Grades");
                 });
@@ -134,7 +139,15 @@ namespace grading_system_api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("GradingSystemApi.Models.Teacher", "Teacher")
+                        .WithMany("Grades")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Student");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("GradingSystemApi.Models.StudentTeacher", b =>
@@ -165,6 +178,8 @@ namespace grading_system_api.Migrations
 
             modelBuilder.Entity("GradingSystemApi.Models.Teacher", b =>
                 {
+                    b.Navigation("Grades");
+
                     b.Navigation("StudentTeachers");
                 });
 #pragma warning restore 612, 618
