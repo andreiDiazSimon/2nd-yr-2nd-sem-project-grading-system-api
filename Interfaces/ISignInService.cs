@@ -1,5 +1,4 @@
 using GradingSystemApi.Dtos;
-using GradingSystemApi.Models;
 
 namespace GradingSystemApi.Interfaces
 {

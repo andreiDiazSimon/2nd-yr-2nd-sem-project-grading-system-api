@@ -1,6 +1,6 @@
 namespace GradingSystemApi.Models
 {
-   public class StudentGradeUpdateModel
+    public class StudentGradeUpdateModel
     {
         public int StudentId { get; set; }
         public int TeacherId { get; set; }
